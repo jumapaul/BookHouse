@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BookHouse</string>
+
+    <string name="onboard_title_1">Find Your Perfect Rental\n To Stay </string>
+    <string name="onboard_title_2"> Find Your\n Dream Home On Rent</string>
+    <string name="onboard_title_3">Easy Way To Book\n Your Hotel With Us </string>
+    <string name="onboard_desc_1"> We provide a fast way to help you find a perfect home</string>
+    <string name="onboard_desc_2"> One of the most well-known home\n rental apps for all users</string>
+    <string name="onboard_desc_3"> From cosy country homes to funky city\n flats. Find deals on hotels and more</string>
 </resources>
