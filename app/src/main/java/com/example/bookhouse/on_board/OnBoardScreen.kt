@@ -1,5 +1,6 @@
 package com.example.bookhouse.on_board
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -40,19 +41,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bookhouse.R
 import com.example.bookhouse.common.navigation.NavigationRoutes
+import com.example.bookhouse.on_board.onboard_viewmodel.OnBoardViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoarding(
-    navController: NavController
+    navController: NavController,
+    onBoardViewModel: OnBoardViewModel = hiltViewModel()
 ) {
 
     val items = OnBoardItems.getItem()
@@ -86,6 +91,8 @@ fun OnBoarding(
                 if (pageState.currentPage + 1 < items.size) scope.launch {
                     pageState.scrollToPage(pageState.currentPage + 1)
                 } else if (pageState.currentPage == items.size - 1) {
+                    onBoardViewModel.saveOnBoardingState(completed = true)
+                    navController.popBackStack()
                     navController.navigate(NavigationRoutes.SignUpScreen.route)
                 }
             },

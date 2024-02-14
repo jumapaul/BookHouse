@@ -10,10 +10,11 @@ import com.example.bookhouse.on_board.OnBoarding
 @Composable
 fun NavigationGraph(
     navHostController: NavHostController,
+    startDestination: String
 ) {
 
     NavHost(
-        navController = navHostController, startDestination = NavigationRoutes.OnBoardScreen.route
+        navController = navHostController, startDestination = startDestination
     ) {
         composable(NavigationRoutes.OnBoardScreen.route) {
             OnBoarding(navHostController)

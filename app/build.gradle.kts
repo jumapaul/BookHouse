@@ -1,9 +1,13 @@
+import com.google.devtools.ksp.gradle.model.Ksp
 import org.gradle.kotlin.dsl.libs
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -70,7 +74,20 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+    //Runtime
+    implementation(libs.runtime)
+    implementation(libs.lifecycle.runtime.ktx)
+
     //Accompanist
     implementation(libs.view.pager)
     implementation(libs.navigation.compose)
+    implementation(libs.datastore.preferences)
+    implementation(libs.viewmodel.compose)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.google.hilt.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation)
+
 }
