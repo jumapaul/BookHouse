@@ -10,7 +10,7 @@ import com.example.bookhouse.on_board.OnBoarding
 @Composable
 fun NavigationGraph(
     navHostController: NavHostController,
-    startDestination: String
+    startDestination: String,
 ) {
 
     NavHost(

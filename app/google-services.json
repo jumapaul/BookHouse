@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "594588776141",
+    "project_id": "bookhouse-e8050",
+    "storage_bucket": "bookhouse-e8050.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594588776141:android:8eeac4bc47ed492c625b84",
+        "android_client_info": {
+          "package_name": "com.example.bookhouse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADP3USgFpYN9YCdZWiImNXw270X2RWHFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
