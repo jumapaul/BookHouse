@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.bookhouse.login.presentation.SignUpScreen
+import com.example.bookhouse.login.presentation.sign_in.SignInScreen
+import com.example.bookhouse.login.presentation.sign_up.SignUpScreen
 import com.example.bookhouse.on_board.OnBoarding
 
 @Composable
@@ -20,8 +21,12 @@ fun NavigationGraph(
             OnBoarding(navHostController)
         }
 
-        composable(NavigationRoutes.SignUpScreen.route){
-            SignUpScreen()
+        composable(NavigationRoutes.SignUpScreen.route) {
+            SignUpScreen(navHostController)
+        }
+
+        composable(NavigationRoutes.SignInScreen.route) {
+            SignInScreen()
         }
     }
 }

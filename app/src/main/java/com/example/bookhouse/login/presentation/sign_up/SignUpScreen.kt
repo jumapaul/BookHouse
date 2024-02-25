@@ -1,4 +1,4 @@
-package com.example.bookhouse.login.presentation
+package com.example.bookhouse.login.presentation.sign_up
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +19,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,30 +32,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.bookhouse.R
+import com.example.bookhouse.common.navigation.NavigationRoutes
+import com.example.bookhouse.login.domain.model.User
+import com.example.bookhouse.login.presentation.SignUpViewModel
 import com.example.bookhouse.login.presentation.components.ClickableTexts
 import com.example.bookhouse.login.presentation.components.EmailTextField
 import com.example.bookhouse.login.presentation.components.LargeTexts
 import com.example.bookhouse.login.presentation.components.PasswordTextField
 import com.example.bookhouse.login.presentation.components.SignButton
 import com.example.bookhouse.login.presentation.components.SmallTexts
+import com.example.bookhouse.login.presentation.sign_up.state.RegisterValidation
+import com.example.bookhouse.login.presentation.sign_up.util.validateConfirmPassword
+import com.example.bookhouse.login.presentation.sign_up.util.validateEmail
+import com.example.bookhouse.login.presentation.sign_up.util.validatePassword
 import com.example.bookhouse.ui.theme.LightBlue
+import com.example.bookhouse.util.Resource
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier = Modifier
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
-
     var emailText by remember {
+        mutableStateOf("")
+    }
+
+    var emailTextError by remember {
         mutableStateOf("")
     }
 
     var passwordText by remember {
         mutableStateOf("")
     }
+
+    var passwordTextError by remember {
+        mutableStateOf("")
+    }
+
+    var confirmPasswordText by remember {
+        mutableStateOf("")
+    }
+
+    var confirPasswordTextError by remember {
+        mutableStateOf("")
+    }
+
+    val user = User(emailText, confirmPasswordText)
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,6 +92,7 @@ fun SignUpScreen(
             .fillMaxSize()
             .padding(25.dp)
     ) {
+
 
         Spacer(modifier = modifier.height(130.dp))
         Box(
@@ -82,7 +114,7 @@ fun SignUpScreen(
 
         Spacer(modifier = modifier.height(60.dp))
 
-        LargeTexts(color = Color.Black, text = "Sign In for free")
+        LargeTexts(color = Color.Black, text = "Sign Up for free")
 
         Spacer(modifier = modifier.height(20.dp))
 
@@ -92,17 +124,21 @@ fun SignUpScreen(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(3.dp),
-
-            )
+        )
 
         EmailTextField(
             email = emailText,
             onNewValue = { newValue ->
+                val results = validateEmail(newValue)
+                emailTextError = if (results is RegisterValidation.Failed) {
+                    results.message
+                } else ""
                 emailText = newValue
-            }, errorText = ""
+            },
+            errorText = emailTextError
         )
 
-        Spacer(modifier = modifier.height(20.dp))
+        Spacer(modifier = modifier.height(15.dp))
 
         SmallTexts(
             text = "Password",
@@ -114,24 +150,47 @@ fun SignUpScreen(
 
         PasswordTextField(
             password = passwordText,
+            holderText = "Password",
             onNewValue = { password ->
+                val results = validatePassword(password)
+                passwordTextError =
+                    if (results is RegisterValidation.Failed) results.message else ""
                 passwordText = password
             },
-            errorText = ""
+            errorText = passwordTextError
         )
-        Text(text = "Forgot password?", textAlign = TextAlign.Start,
+
+        Spacer(modifier = modifier.height(15.dp))
+
+        SmallTexts(
+            text = "Confirm Password",
+            textAlign = TextAlign.Start,
             modifier = modifier
                 .fillMaxWidth()
-                .clickable {
-                    TODO()
-                },
-            color = LightBlue
+                .padding(3.dp),
         )
-        Spacer(modifier = modifier.height(20.dp))
+
+        PasswordTextField(
+            password = confirmPasswordText,
+            holderText = "Confirm password",
+            onNewValue = { confirmPassword ->
+                val results = validateConfirmPassword(passwordText, confirmPassword)
+                confirPasswordTextError =
+                    if (results is RegisterValidation.Failed) results.message else ""
+                confirmPasswordText = confirmPassword
+            },
+            errorText = confirPasswordTextError
+        )
+
+        Spacer(modifier = modifier.height(15.dp))
 
         SignButton(
-            onclick = { /*TODO*/ },
-            signText = "Sign In"
+            onclick = {
+                signUpViewModel.createAccountWithEmailAndPassword(
+                    user, confirmPasswordText
+                )
+            },
+            signText = "Sign Up"
         )
         Spacer(modifier = modifier.height(20.dp))
         SmallTexts(text = "Or continue with", textAlign = TextAlign.Center)
@@ -163,28 +222,25 @@ fun SignUpScreen(
         Spacer(modifier = modifier.height(20.dp))
 
         Row {
-            SmallTexts(text = "Do not have an account?", textAlign = TextAlign.Center)
+            SmallTexts(text = "Already have an account?", textAlign = TextAlign.Center)
             Spacer(modifier = modifier.width(5.dp))
             Text(
-                text = "Create one",
+                text = "Sign in",
                 color = LightBlue,
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 20.sp,
                 modifier = modifier.clickable {
-                    TODO()
+                    navController.navigate(NavigationRoutes.SignInScreen.route)
                 }
             )
         }
 
     }
+    val registerState by signUpViewModel.register.collectAsState()
 
-}
-
-@Preview(
-    showBackground = true
-)
-@Composable
-fun SignUpScreenPreview() {
-    SignUpScreen()
-
+    if (registerState is Resource.Success) {
+        LaunchedEffect(Unit) {
+            navController.navigate(NavigationRoutes.SignInScreen.route)
+        }
+    }
 }

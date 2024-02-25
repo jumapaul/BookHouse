@@ -2,6 +2,7 @@ package com.example.bookhouse.di
 
 import android.content.Context
 import com.example.bookhouse.on_board.utils.DataStoreUtils
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +19,15 @@ object BookHouseModule {
     fun provideDataUtils(
         @ApplicationContext context: Context
     ) = DataStoreUtils(context = context)
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+
+//    @Provides
+//    @Singleton
+//    fun provideEmailAndPassword(): ValidateEmailAndPassword{
+//        return ValidateEmailAndPassword()
+//    }
+
 }

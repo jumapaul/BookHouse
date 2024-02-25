@@ -25,9 +25,7 @@ fun SignButton(
 ) {
 
     OutlinedButton(
-        onClick = {
-            onclick
-        },
+        onClick = onclick,
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
