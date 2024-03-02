@@ -1,4 +1,4 @@
-package com.example.bookhouse.login.presentation
+package com.example.bookhouse.login.presentation.sign_up
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

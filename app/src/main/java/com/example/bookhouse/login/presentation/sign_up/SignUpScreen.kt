@@ -39,7 +39,7 @@ import androidx.navigation.NavController
 import com.example.bookhouse.R
 import com.example.bookhouse.common.navigation.NavigationRoutes
 import com.example.bookhouse.login.domain.model.User
-import com.example.bookhouse.login.presentation.SignUpViewModel
+import com.example.bookhouse.login.presentation.sign_up.SignUpViewModel
 import com.example.bookhouse.login.presentation.components.ClickableTexts
 import com.example.bookhouse.login.presentation.components.EmailTextField
 import com.example.bookhouse.login.presentation.components.LargeTexts
