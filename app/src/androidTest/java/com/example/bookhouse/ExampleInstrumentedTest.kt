@@ -21,4 +21,9 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.bookhouse", appContext.packageName)
     }
+
+    @Test
+    fun addition_isCorrect(){
+        fail()
+    }
 }

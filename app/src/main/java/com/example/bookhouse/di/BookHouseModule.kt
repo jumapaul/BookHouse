@@ -1,7 +1,7 @@
 package com.example.bookhouse.di
 
 import android.content.Context
-import com.example.bookhouse.on_board.utils.DataStoreUtils
+import com.example.bookhouse.util.DataStoreUtils
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides

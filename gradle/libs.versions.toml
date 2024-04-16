@@ -27,6 +27,7 @@ firebase = "4.4.1"
 firebase-bom = "32.7.2"
 firebase-auth = "22.3.1"
 material-extended = "1.6.1"
+play-service-auth = "21.0.0"
 
 
 [libraries]
@@ -56,15 +57,21 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel-compose" }
 
+#runtime
+lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle-runtime-ktx" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
+
 #dagger hilt and dagger hilt compiler
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
 google-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "google-hilt-compiler" }
 hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-compiler" }
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
 runtime = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime" }
+#firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth" }
+play-service-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-service-auth" }
 
 
 [plugins]
@@ -72,9 +79,13 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
-#Additional
+#Additional plugins
+#Hilt
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
+#ksp
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+#kotlin kapt
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+#firebase
 firebase = { id = "com.google.gms.google-services", version.ref = "firebase" }
 

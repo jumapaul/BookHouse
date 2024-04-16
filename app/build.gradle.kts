@@ -79,7 +79,8 @@ dependencies {
 
     //Runtime
     implementation(libs.runtime)
-    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
 
     //Accompanist
     implementation(libs.view.pager)
@@ -96,6 +97,5 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-
-
+    implementation(libs.play.service.auth)
 }
