@@ -11,6 +11,6 @@ class OnBoardViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun saveState(state: String, value: Boolean) {
-        dataStoreUtils.saveDate(state, value)
+        dataStoreUtils.saveFinishState(state, value)
     }
 }

@@ -28,6 +28,9 @@ firebase-bom = "32.7.2"
 firebase-auth = "22.3.1"
 material-extended = "1.6.1"
 play-service-auth = "21.0.0"
+gson = "2.10.1"
+coil-compose = "2.0.0-rc01"
+
 
 
 [libraries]
@@ -73,6 +76,9 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth" }
 play-service-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-service-auth" }
 
+#Gson
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

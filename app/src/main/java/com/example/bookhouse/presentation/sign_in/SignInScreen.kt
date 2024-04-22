@@ -1,6 +1,11 @@
 package com.example.bookhouse.presentation.sign_in
 
+import android.app.Activity
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,34 +39,33 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bookhouse.R
-import com.example.bookhouse.presentation.navigation.NavigationRoutes
 import com.example.bookhouse.domain.model.User
 import com.example.bookhouse.presentation.components.BlueColoredTexts
 import com.example.bookhouse.presentation.components.ElevatedButtonComposable
 import com.example.bookhouse.presentation.components.EmailTextField
 import com.example.bookhouse.presentation.components.LargeTexts
+import com.example.bookhouse.presentation.components.OneTapSignIn
 import com.example.bookhouse.presentation.components.PasswordTextField
 import com.example.bookhouse.presentation.components.SignButton
 import com.example.bookhouse.presentation.components.SmallTexts
+import com.example.bookhouse.presentation.navigation.NavigationRoutes
 import com.example.bookhouse.presentation.sign_in.reset_password.ResetPasswordDialog
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
-import com.example.bookhouse.presentation.sign_up.state.SignInState
 import com.example.bookhouse.presentation.sign_up.util.validateEmail
 import com.example.bookhouse.presentation.sign_up.util.validatePassword
 import com.example.bookhouse.ui.theme.LightBlue
 import com.example.bookhouse.util.Resource
+import com.example.bookhouse.util.converter.toJson
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
 fun SignInScreen(
     navController: NavController,
-    state: SignInState,
-    onSignInWithGoogleClick: () -> Unit,
+    modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val resetEmailState = signInViewModel.resetPassword.collectAsState().value
     var emailText by remember {
@@ -72,9 +76,6 @@ fun SignInScreen(
         mutableStateOf("")
     }
 
-    var dialogEmail by remember {
-        mutableStateOf("")
-    }
     var dialogEmailTextError by remember {
         mutableStateOf("")
     }
@@ -95,9 +96,42 @@ fun SignInScreen(
 
     var resetEmailText by remember {
         mutableStateOf("")
+
     }
 
+    val signInState = signInViewModel.signIn.collectAsState().value
+
+
     val context = LocalContext.current
+
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                try {
+                    val credential =
+                        signInViewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                    signInViewModel.signInWithGoogle(credential)
+
+                    val userName = credential.displayName
+                    val profilePicUri = credential.profilePictureUri
+                    val userData = UserData(userName, profilePicUri.toString())
+                    signInViewModel.saveUserData(userData)
+
+                    navController.navigate(NavigationRoutes.HomeScreen.route)
+
+                } catch (e: Exception) {
+                    Log.e("launcher------>", "Login oneTap ${e.message}")
+                }
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                Log.e("Launcher----->", "OneTapClient canceled")
+            }
+        }
+
+    fun launch(signInResults: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResults.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -221,9 +255,11 @@ fun SignInScreen(
             ElevatedButtonComposable(
                 painter = painterResource(id = R.drawable.google),
                 text = "Google",
-            ) {
-                TODO()
-            }
+                onclick = {
+                    Log.d("----------->", "SignInScreen: clicked")
+                    signInViewModel.oneTapSignIn()
+                }
+            )
             Spacer(modifier = modifier.width(10.dp))
 
             ElevatedButtonComposable(
@@ -256,7 +292,6 @@ fun SignInScreen(
 
     }
 
-    val signInState by signInViewModel.signIn.collectAsState()
 
     when (signInState) {
         is Resource.Success -> {
@@ -266,7 +301,6 @@ fun SignInScreen(
         }
 
         is Resource.Error -> {
-            val context = LocalContext.current
             val errorMessage = signInState.message
             LaunchedEffect(key1 = Unit) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
@@ -297,4 +331,11 @@ fun SignInScreen(
         }
     }
 
+    OneTapSignIn(
+        context = context,
+        launch = {
+            launch(it)
+        },
+        navController = navController
+    )
 }

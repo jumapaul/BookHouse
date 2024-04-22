@@ -2,32 +2,39 @@ package com.example.bookhouse.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.preferencesDataStore
+import android.util.Log
 import com.example.bookhouse.presentation.sign_in.UserData
+import com.example.bookhouse.util.converter.fromJson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import java.io.IOException
 import javax.inject.Inject
 
 class DataStoreUtils @Inject constructor(@ApplicationContext context: Context) {
 
-    private val sharedPreferences: SharedPreferences =
+    private val finishSharedPreferences: SharedPreferences =
         context.getSharedPreferences("finish", Context.MODE_PRIVATE)
 
-    fun saveDate(key: String, value: Boolean) {
-        val editor = sharedPreferences.edit()
+    private val userSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("user", Context.MODE_PRIVATE)
+
+    fun saveFinishState(key: String, value: Boolean) {
+        val editor = finishSharedPreferences.edit()
         editor.putBoolean(key, value)
         editor.apply()
     }
 
-    fun getData(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
+    fun getFinishState(key: String, defaultValue: Boolean): Boolean {
+        return finishSharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    fun saveUserData(key: String, value: String) {
+        val editor = userSharedPreferences.edit()
+        editor.putString(key, value)
+        editor.apply()
+    }
+
+    fun getUserData(key: String, defaultValue: String): String {
+        val x = userSharedPreferences.getString(key, defaultValue) ?: defaultValue
+        Log.d("--------->", "getUserData: ${x.fromJson(UserData::class.java)}")
+        return x
     }
 }

@@ -98,4 +98,10 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.play.service.auth)
+
+    //glide
+    implementation(libs.coil.compose)
+
+    //gson
+    implementation(libs.gson)
 }

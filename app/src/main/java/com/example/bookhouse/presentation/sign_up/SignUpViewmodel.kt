@@ -40,7 +40,7 @@ class SignUpViewModel @Inject constructor(
     }
     private fun getState(): Boolean {
         val newValue = false
-        return dataStoreUtils.getData("finish", newValue)
+        return dataStoreUtils.getFinishState("finish", newValue)
     }
 
     fun createAccountWithEmailAndPassword(user: User, confirmPassword: String) {
