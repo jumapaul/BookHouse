@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,12 +39,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bookhouse.R
-import com.example.bookhouse.presentation.navigation.NavigationRoutes
-import com.example.bookhouse.domain.model.User
+import com.example.bookhouse.domain.model.sign_in.User
 import com.example.bookhouse.presentation.components.BlueColoredTexts
 import com.example.bookhouse.presentation.components.ElevatedButtonComposable
 import com.example.bookhouse.presentation.components.EmailTextField
@@ -54,16 +51,16 @@ import com.example.bookhouse.presentation.components.OneTapSignIn
 import com.example.bookhouse.presentation.components.PasswordTextField
 import com.example.bookhouse.presentation.components.SignButton
 import com.example.bookhouse.presentation.components.SmallTexts
+import com.example.bookhouse.presentation.navigation.auth_graph.AuthScreenRoutes
+import com.example.bookhouse.presentation.navigation.main_graph.Graphs
 import com.example.bookhouse.presentation.sign_in.SignInViewModel
 import com.example.bookhouse.presentation.sign_in.UserData
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
-import com.example.bookhouse.presentation.sign_up.state.SignInState
 import com.example.bookhouse.presentation.sign_up.util.validateConfirmPassword
 import com.example.bookhouse.presentation.sign_up.util.validateEmail
 import com.example.bookhouse.presentation.sign_up.util.validatePassword
 import com.example.bookhouse.ui.theme.LightBlue
 import com.example.bookhouse.util.Resource
-import com.example.bookhouse.util.converter.toJson
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
@@ -74,7 +71,6 @@ fun SignUpScreen(
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
 
-    val destinationState = signUpViewModel.startDestinationState.collectAsState().value
 
     var emailText by remember {
         mutableStateOf("")
@@ -114,11 +110,11 @@ fun SignUpScreen(
                     val name = credential.displayName
                     val profilePicUri = credential.profilePictureUri
 
-                    val user = UserData(
+                    val userData = UserData(
                         name, profilePicUri.toString()
                     )
-                    signInViewModel.saveUserData(user)
-                    navController.navigate(NavigationRoutes.HomeScreen.route)
+                    signInViewModel.saveUserData(userData)
+                    navController.navigate(Graphs.HOME_GRAPH)
 
                 } catch (e: Exception) {
                     Log.e("launcher------>", "Login oneTap ${e.message}")
@@ -280,8 +276,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.clickable {
-                    Log.d("----->", "SignUpScreen: ")
-                    navController.navigate(NavigationRoutes.SignInScreen.route)
+                    navController.navigate(AuthScreenRoutes.SignInScreenRoutes.route)
                 }
             )
         }
@@ -296,7 +291,7 @@ fun SignUpScreen(
 
         is Resource.Success -> {
             LaunchedEffect(key1 = Unit) {
-                navController.navigate(NavigationRoutes.SignInScreen.route)
+                navController.navigate(Graphs.AUTHENTICATION_GRAPH)
             }
         }
 
@@ -308,11 +303,8 @@ fun SignUpScreen(
         }
     }
 
-    if (!destinationState) {
-        navController.navigate(NavigationRoutes.OnBoardScreen.route)
-    }
-
     OneTapSignIn(launch = {
         launch(it)
     }, context = context, navController = navController)
+
 }

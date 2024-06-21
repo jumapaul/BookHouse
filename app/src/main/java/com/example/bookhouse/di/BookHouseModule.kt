@@ -5,8 +5,11 @@ import android.content.Context
 import com.example.bookhouse.R
 import com.example.bookhouse.constants.Constants.SIGN_IN_REQUEST
 import com.example.bookhouse.constants.Constants.SIGN_UP_REQUEST
+import com.example.bookhouse.data.data_source.PropertyListingService
 import com.example.bookhouse.data.repositoryImpl.AuthRepositoryImpl
+import com.example.bookhouse.data.repositoryImpl.PropertiesListingRepositoryImpl
 import com.example.bookhouse.domain.repository.AuthRepository
+import com.example.bookhouse.domain.repository.PropertyListingRepository
 import com.example.bookhouse.util.DataStoreUtils
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -29,6 +32,7 @@ object BookHouseModule {
     fun provideDataUtils(
         @ApplicationContext context: Context
     ) = DataStoreUtils(context = context)
+
     @Provides
     @Singleton
     fun provideFirebaseAuth() = FirebaseAuth.getInstance()
@@ -63,4 +67,14 @@ object BookHouseModule {
     @Provides
     @Singleton
     fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+
+    @Singleton
+    @Provides
+    fun providePropertyListingService(@ApplicationContext context: Context): PropertyListingService = PropertyListingService(context)
+    @Provides
+    @Singleton
+    fun provideListingRepository(impl: PropertiesListingRepositoryImpl): PropertyListingRepository =
+        impl
+
+
 }

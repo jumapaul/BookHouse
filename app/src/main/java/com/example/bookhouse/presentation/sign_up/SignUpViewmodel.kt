@@ -2,7 +2,7 @@ package com.example.bookhouse.presentation.sign_up
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookhouse.domain.model.User
+import com.example.bookhouse.domain.model.sign_in.User
 import com.example.bookhouse.presentation.sign_up.state.RegisterFieldState
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
 import com.example.bookhouse.presentation.sign_up.util.validateConfirmPassword
@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -32,16 +31,6 @@ class SignUpViewModel @Inject constructor(
     private val _validation = Channel<RegisterFieldState>()
     val validated = _validation.receiveAsFlow()
 
-    private var _startDestinationState: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val startDestinationState: StateFlow<Boolean> = _startDestinationState.asStateFlow()
-
-    init {
-        getState()
-    }
-    private fun getState(): Boolean {
-        val newValue = false
-        return dataStoreUtils.getFinishState("finish", newValue)
-    }
 
     fun createAccountWithEmailAndPassword(user: User, confirmPassword: String) {
         viewModelScope.launch {

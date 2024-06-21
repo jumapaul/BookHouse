@@ -2,9 +2,6 @@ package com.example.bookhouse.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.example.bookhouse.presentation.sign_in.UserData
-import com.example.bookhouse.util.converter.fromJson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -33,8 +30,6 @@ class DataStoreUtils @Inject constructor(@ApplicationContext context: Context) {
     }
 
     fun getUserData(key: String, defaultValue: String): String {
-        val x = userSharedPreferences.getString(key, defaultValue) ?: defaultValue
-        Log.d("--------->", "getUserData: ${x.fromJson(UserData::class.java)}")
-        return x
+        return userSharedPreferences.getString(key, defaultValue) ?: defaultValue
     }
 }

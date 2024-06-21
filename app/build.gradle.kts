@@ -104,4 +104,11 @@ dependencies {
 
     //gson
     implementation(libs.gson)
+
+    implementation (libs.androidx.material)
+    implementation (libs.gson.v288)
+    implementation (libs.accompanist.pager.indicators)
+
+
+
 }

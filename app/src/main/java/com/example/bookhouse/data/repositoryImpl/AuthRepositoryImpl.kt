@@ -1,26 +1,26 @@
 package com.example.bookhouse.data.repositoryImpl
 
-import android.util.Log
+import android.content.Context
 import com.example.bookhouse.constants.Constants.SIGN_IN_REQUEST
 import com.example.bookhouse.constants.Constants.SIGN_UP_REQUEST
-import com.example.bookhouse.domain.model.FirebaseSignInResponse
-import com.example.bookhouse.domain.model.OneTapSignInResponse
+import com.example.bookhouse.domain.model.sign_in.FirebaseSignInResponse
+import com.example.bookhouse.domain.model.sign_in.OneTapSignInResponse
 import com.example.bookhouse.domain.repository.AuthRepository
 import com.example.bookhouse.util.Resource
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.SignInCredential
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.math.log
 
 class AuthRepositoryImpl @Inject constructor(
+    @ApplicationContext private  val context: Context,
     private val auth: FirebaseAuth,
     private var oneTapClient: SignInClient,
     @Named(SIGN_IN_REQUEST) private var signInRequest: BeginSignInRequest,

@@ -1,4 +1,4 @@
-package com.example.bookhouse.domain.model
+package com.example.bookhouse.domain.model.sign_in
 
 data class User(
     val email: String = "",

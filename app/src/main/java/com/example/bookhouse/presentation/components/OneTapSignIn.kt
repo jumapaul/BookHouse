@@ -6,8 +6,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
-import com.example.bookhouse.domain.model.DataProvider
-import com.example.bookhouse.presentation.navigation.NavigationRoutes
+import com.example.bookhouse.domain.model.sign_in.DataProvider
 import com.example.bookhouse.util.Resource
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 

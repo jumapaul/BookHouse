@@ -1,4 +1,4 @@
-package com.example.bookhouse.domain.model
+package com.example.bookhouse.domain.model.sign_in
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

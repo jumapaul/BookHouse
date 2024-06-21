@@ -3,8 +3,8 @@ package com.example.bookhouse.presentation.sign_in
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bookhouse.domain.model.DataProvider
-import com.example.bookhouse.domain.model.User
+import com.example.bookhouse.domain.model.sign_in.DataProvider
+import com.example.bookhouse.domain.model.sign_in.User
 import com.example.bookhouse.domain.repository.AuthRepository
 import com.example.bookhouse.util.DataStoreUtils
 import com.example.bookhouse.util.Resource
@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,13 +28,24 @@ class SignInViewModel @Inject constructor(
     val oneTapClient: SignInClient,
     private val dataStoreUtils: DataStoreUtils
 ) : ViewModel() {
-
+    var number = MutableStateFlow(0)
     private val _signIn = MutableStateFlow<Resource<User>>(Resource.Loading())
     val signIn = _signIn.asStateFlow()
 
     private val _resetPassword = MutableStateFlow<Resource<String>>(Resource.Loading())
     val resetPassword = _resetPassword.asStateFlow()
 
+    private var _startDestinationState: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val startDestinationState: StateFlow<Boolean> = _startDestinationState.asStateFlow()
+
+    init {
+        getState()
+    }
+
+    private fun getState() {
+        val newValue = false
+        _startDestinationState.value = dataStoreUtils.getFinishState("finish", newValue)
+    }
     fun signInWithEmailAndPassword(user: User) {
         viewModelScope.launch {
             firebaseAuth.signInWithEmailAndPassword(user.email, user.password)

@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bookhouse.R
-import com.example.bookhouse.domain.model.User
+import com.example.bookhouse.domain.model.sign_in.User
 import com.example.bookhouse.presentation.components.BlueColoredTexts
 import com.example.bookhouse.presentation.components.ElevatedButtonComposable
 import com.example.bookhouse.presentation.components.EmailTextField
@@ -51,14 +51,15 @@ import com.example.bookhouse.presentation.components.OneTapSignIn
 import com.example.bookhouse.presentation.components.PasswordTextField
 import com.example.bookhouse.presentation.components.SignButton
 import com.example.bookhouse.presentation.components.SmallTexts
-import com.example.bookhouse.presentation.navigation.NavigationRoutes
+import com.example.bookhouse.presentation.navigation.auth_graph.AuthScreenRoutes
+import com.example.bookhouse.presentation.navigation.bottom_bar_screen.BottomBarScreen
+import com.example.bookhouse.presentation.navigation.main_graph.Graphs
 import com.example.bookhouse.presentation.sign_in.reset_password.ResetPasswordDialog
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
 import com.example.bookhouse.presentation.sign_up.util.validateEmail
 import com.example.bookhouse.presentation.sign_up.util.validatePassword
 import com.example.bookhouse.ui.theme.LightBlue
 import com.example.bookhouse.util.Resource
-import com.example.bookhouse.util.converter.toJson
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 
 @Composable
@@ -68,6 +69,7 @@ fun SignInScreen(
     signInViewModel: SignInViewModel = hiltViewModel(),
 ) {
     val resetEmailState = signInViewModel.resetPassword.collectAsState().value
+
     var emailText by remember {
         mutableStateOf("")
     }
@@ -117,7 +119,7 @@ fun SignInScreen(
                     val userData = UserData(userName, profilePicUri.toString())
                     signInViewModel.saveUserData(userData)
 
-                    navController.navigate(NavigationRoutes.HomeScreen.route)
+                    navController.navigate(Graphs.HOME_GRAPH)
 
                 } catch (e: Exception) {
                     Log.e("launcher------>", "Login oneTap ${e.message}")
@@ -285,7 +287,7 @@ fun SignInScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start,
                 modifier = modifier.clickable {
-                    navController.navigate(NavigationRoutes.SignUpScreen.route)
+                    navController.navigate(AuthScreenRoutes.SignUpScreenRoutes.route)
                 }
             )
         }
@@ -295,8 +297,10 @@ fun SignInScreen(
 
     when (signInState) {
         is Resource.Success -> {
+
             LaunchedEffect(key1 = Unit) {
-                navController.navigate(NavigationRoutes.HomeScreen.route)
+                navController.navigate(Graphs.HOME_GRAPH)
+
             }
         }
 
@@ -338,4 +342,5 @@ fun SignInScreen(
         },
         navController = navController
     )
+
 }

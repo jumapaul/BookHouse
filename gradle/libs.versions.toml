@@ -1,5 +1,8 @@
 [versions]
+accompanist-pager-indicators = "0.28.0"
 agp = "8.2.1"
+androidx-material = "1.6.6"
+google-gson = "2.10.1"
 kotlin = "1.9.0"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -34,7 +37,10 @@ coil-compose = "2.0.0-rc01"
 
 
 [libraries]
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist-pager-indicators" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "androidx-material" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+gson-v288 = { module = "com.google.code.gson:gson", version.ref = "google-gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
