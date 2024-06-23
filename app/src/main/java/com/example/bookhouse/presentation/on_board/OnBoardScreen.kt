@@ -43,9 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
 import com.example.bookhouse.R
-import com.example.bookhouse.presentation.navigation.main_graph.Graphs
 import com.example.bookhouse.presentation.on_board.onboard_viewmodel.OnBoardViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -56,7 +54,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnBoarding(
+fun OnBoardingScreen(
     navController: NavController,
     onBoardViewModel: OnBoardViewModel = hiltViewModel()
 ) {
@@ -94,7 +92,7 @@ fun OnBoarding(
                 } else if (pageState.currentPage == items.size - 1) {
                     onBoardViewModel.saveState("finish", true)
                     navController.popBackStack()
-                    navController.navigate(Graphs.AUTHENTICATION_GRAPH)
+//                    navController.navigate(Graphs.AUTHENTICATION_GRAPH)
                 }
             },
             pageState,

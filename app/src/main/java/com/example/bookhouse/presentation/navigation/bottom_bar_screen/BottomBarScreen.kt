@@ -21,17 +21,17 @@ sealed class BottomBarScreen(
 
     object FavoriteScreen : BottomBarScreen(
         route = "FAVORITE",
-        title = "FAVORITE",
+        title = "Favorite",
         icon = Icons.Filled.Favorite)
 
     object BookingScreen : BottomBarScreen(
         route = "BOOKINGS",
-        title = "BOOKINGS",
+        title = "Bookings",
         icon = Icons.Filled.CalendarMonth)
 
     object MessagesScreen : BottomBarScreen(
         route = "MESSAGES",
-        title = "MESSAGES",
+        title = "Messages",
         icon = Icons.Filled.Message)
 }
 

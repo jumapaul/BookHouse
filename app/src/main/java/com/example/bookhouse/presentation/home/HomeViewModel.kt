@@ -22,10 +22,11 @@ class HomeViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val dataStoreUtils: DataStoreUtils,
     private val repository: PropertyListingRepository
-//    private val homeUseCases: HomeUseCases
 ) : ViewModel() {
 
     private val properties: MutableList<PropertyResults> = mutableListOf()
+
+    var propertiesPerGroup = MutableStateFlow<List<PropertyResults>?>(emptyList())
 
     private var _propertiesListingState = mutableStateOf(PropertyListingUiState())
     val propertyListingState: State<PropertyListingUiState> = _propertiesListingState
@@ -42,6 +43,11 @@ class HomeViewModel @Inject constructor(
         getUserNameFromEmail()
         getCurrentUser()
         getPropertyListings()
+
+        viewModelScope.launch {
+            propertiesPerGroup.value = getListingGroups("Apartment")
+
+        }
     }
 
     private fun getUserInfo() {

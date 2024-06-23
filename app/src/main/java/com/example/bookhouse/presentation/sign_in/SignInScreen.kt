@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,9 +50,8 @@ import com.example.bookhouse.presentation.components.OneTapSignIn
 import com.example.bookhouse.presentation.components.PasswordTextField
 import com.example.bookhouse.presentation.components.SignButton
 import com.example.bookhouse.presentation.components.SmallTexts
-import com.example.bookhouse.presentation.navigation.auth_graph.AuthScreenRoutes
+import com.example.bookhouse.presentation.navigation.Routes
 import com.example.bookhouse.presentation.navigation.bottom_bar_screen.BottomBarScreen
-import com.example.bookhouse.presentation.navigation.main_graph.Graphs
 import com.example.bookhouse.presentation.sign_in.reset_password.ResetPasswordDialog
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
 import com.example.bookhouse.presentation.sign_up.util.validateEmail
@@ -119,7 +117,7 @@ fun SignInScreen(
                     val userData = UserData(userName, profilePicUri.toString())
                     signInViewModel.saveUserData(userData)
 
-                    navController.navigate(Graphs.HOME_GRAPH)
+                    navController.navigate(BottomBarScreen.HomeScreen.route)
 
                 } catch (e: Exception) {
                     Log.e("launcher------>", "Login oneTap ${e.message}")
@@ -142,7 +140,6 @@ fun SignInScreen(
             .padding(25.dp)
     ) {
 
-        Spacer(modifier = modifier.height(60.dp))
         Box(
             modifier = modifier
                 .wrapContentSize()
@@ -159,10 +156,6 @@ fun SignInScreen(
         }
         Spacer(modifier = modifier.height(10.dp))
         LargeTexts(color = LightBlue, text = "BookHouse")
-
-        Spacer(modifier = modifier.height(20.dp))
-
-        LargeTexts(color = Color.Black, text = "Sign In for free")
 
         Spacer(modifier = modifier.height(20.dp))
 
@@ -276,7 +269,7 @@ fun SignInScreen(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
             SmallTexts(text = "Don't have an account?", textAlign = TextAlign.Center)
@@ -287,7 +280,7 @@ fun SignInScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start,
                 modifier = modifier.clickable {
-                    navController.navigate(AuthScreenRoutes.SignUpScreenRoutes.route)
+                    navController.navigate(Routes.SignUpScreenRoutes.routes)
                 }
             )
         }
@@ -299,7 +292,7 @@ fun SignInScreen(
         is Resource.Success -> {
 
             LaunchedEffect(key1 = Unit) {
-                navController.navigate(Graphs.HOME_GRAPH)
+                navController.navigate(BottomBarScreen.HomeScreen.route)
 
             }
         }

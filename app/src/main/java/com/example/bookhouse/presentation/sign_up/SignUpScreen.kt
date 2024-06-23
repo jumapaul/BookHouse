@@ -51,8 +51,8 @@ import com.example.bookhouse.presentation.components.OneTapSignIn
 import com.example.bookhouse.presentation.components.PasswordTextField
 import com.example.bookhouse.presentation.components.SignButton
 import com.example.bookhouse.presentation.components.SmallTexts
-import com.example.bookhouse.presentation.navigation.auth_graph.AuthScreenRoutes
-import com.example.bookhouse.presentation.navigation.main_graph.Graphs
+import com.example.bookhouse.presentation.navigation.Routes
+import com.example.bookhouse.presentation.navigation.bottom_bar_screen.BottomBarScreen
 import com.example.bookhouse.presentation.sign_in.SignInViewModel
 import com.example.bookhouse.presentation.sign_in.UserData
 import com.example.bookhouse.presentation.sign_up.state.RegisterValidation
@@ -114,7 +114,7 @@ fun SignUpScreen(
                         name, profilePicUri.toString()
                     )
                     signInViewModel.saveUserData(userData)
-                    navController.navigate(Graphs.HOME_GRAPH)
+                    navController.navigate(BottomBarScreen.HomeScreen.route)
 
                 } catch (e: Exception) {
                     Log.e("launcher------>", "Login oneTap ${e.message}")
@@ -138,7 +138,7 @@ fun SignUpScreen(
     ) {
 
 
-        Spacer(modifier = modifier.height(60.dp))
+//        Spacer(modifier = modifier.height(40.dp))
         Box(
             modifier = modifier
                 .wrapContentSize()
@@ -155,10 +155,6 @@ fun SignUpScreen(
         }
         Spacer(modifier = modifier.height(10.dp))
         LargeTexts(color = LightBlue, text = "BookHouse")
-
-        Spacer(modifier = modifier.height(20.dp))
-
-        LargeTexts(color = Color.Black, text = "Sign Up for free")
 
         Spacer(modifier = modifier.height(20.dp))
 
@@ -276,7 +272,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.clickable {
-                    navController.navigate(AuthScreenRoutes.SignInScreenRoutes.route)
+                    navController.navigate(Routes.SignInScreenRoutes.routes)
                 }
             )
         }
@@ -291,7 +287,7 @@ fun SignUpScreen(
 
         is Resource.Success -> {
             LaunchedEffect(key1 = Unit) {
-                navController.navigate(Graphs.AUTHENTICATION_GRAPH)
+                navController.navigate(Routes.SignUpScreenRoutes.routes)
             }
         }
 
